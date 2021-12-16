@@ -19,7 +19,17 @@ def n_length_combo(iterable, r):
     stocks_value_sum = int()
     for stock in range(0, len(tmp)):
         stocks_value_sum += tmp[stock][1]
+
     if stocks_value_sum <= 500:
+        profit_list = list()
+        for j in range(0, len(tmp)):
+            profit_list.append(int(tmp[j][1]) * float(tmp[j][2]))
+        profit_sum = sum(profit_list)
+        profit_sum = round(profit_sum, 2)
+        profit = ("PROFIT: ", profit_sum)
+        tmp = list(tmp)
+        tmp.append(profit)
+        tmp = tuple(tmp)
         result.append(tmp)
 
     while len(tmp) > 6:
@@ -28,7 +38,6 @@ def n_length_combo(iterable, r):
             if index[i] != i + n - r:
                 break
         else:
-            # print(result)
             return n_length_combo(iterable, r-1)
 
         index[i] += 1
@@ -42,11 +51,41 @@ def n_length_combo(iterable, r):
         for stock in range(0, len(tmp)):
             stocks_value_sum += tmp[stock][1]
         if stocks_value_sum <= 500:
+            profit_list = list()
+            for j in range(0, len(tmp)):
+                profit_list.append(int(tmp[j][1]) * float(tmp[j][2]))
+            profit_sum = sum(profit_list)
+            profit_sum = round(profit_sum, 2)
+            profit = ("PROFIT:", profit_sum)
+            tmp = list(tmp)
+            tmp.append(profit)
+            tmp = tuple(tmp)
             result.append(tmp)
             
-    with open("greedy_output.json", "w") as file:
+    with open("bruteforce_output.json", "w") as file:
     file.write(str(result))
     return result
+
+def get_max_profit(result):
+    max_profit = None
+    for stock_combination in result:
+        profit_value = stock_combination[-1][1]
+
+        if max_profit is None or profit_value > max_profit:
+            max_profit = profit_value
+            best_stock_option = stock_combination[0:-1]
+
+    raw_sum = []
+    for stock in best_stock_option:
+        raw_sum.append(stock[1])
+    invested_money = sum(raw_sum)
+
+    print('Number of combinations:', len(result))
+    print('Best buying stock-option:', best_stock_option)
+    print('Money invested:', invested_money)
+    print('Maximum profit:', max_profit)
+
+
 
 stocks = [
     ("Action-1", 20, 0.05),
@@ -71,4 +110,4 @@ stocks = [
     ("Action-20", 114, 0.18)
 ]
 
-n_length_combo("abcdef", 4)
+get_max_profit(n_length_combo(stocks, 16))
