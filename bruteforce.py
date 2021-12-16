@@ -19,15 +19,16 @@ def n_length_combo(iterable, r):
     stocks_value_sum = int()
     for stock in range(0, len(tmp)):
         stocks_value_sum += tmp[stock][1]
-    if stocks_value_sum <= 200:
+    if stocks_value_sum <= 500:
         result.append(tmp)
-    while len(tmp) > 0:
+
+    while len(tmp) > 6:
 
         for i in reversed(range(r)):
             if index[i] != i + n - r:
                 break
         else:
-            print(result)
+            # print(result)
             return n_length_combo(iterable, r-1)
 
         index[i] += 1
@@ -40,20 +41,14 @@ def n_length_combo(iterable, r):
         stocks_value_sum = int()
         for stock in range(0, len(tmp)):
             stocks_value_sum += tmp[stock][1]
-        if stocks_value_sum <= 200:
+        if stocks_value_sum <= 500:
             result.append(tmp)
-
+            
+    with open("greedy_output.json", "w") as file:
+    file.write(str(result))
+    return result
 
 stocks = [
-    ("Action1", 20, 0.05),
-    ("Action2", 30, 0.10),
-    ("Action3", 50, 0.15),
-    ("Action4", 70, 0.20),
-    ("Action5", 60, 0.17),
-    ("Action6", 80, 0.25)
-]
-
-stocks_full = [
     ("Action-1", 20, 0.05),
     ("Action-2", 30, 0.10),
     ("Action-3", 50, 0.15),
